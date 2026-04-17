@@ -259,7 +259,7 @@ This solution is built with .NET and uses a combination of:
 - A separate .NET frontend technology for teacher assessment
 - Shared .NET class libraries
 
-- ## Git Hook Setup
+## Git Hook Setup
 
 This repository uses a shared Git pre-commit hook to check code formatting before a commit is created.
 
@@ -270,7 +270,7 @@ The hook is stored in:
 ```text
 .githooks/pre-commit
 ```
-*** Enable to hook locally
+### Enable to hook locally
 ```text
 git config core.hooksPath .githooks
 ```
