@@ -1,4 +1,4 @@
-﻿namespace Simulation.Desktop.Models;
+﻿namespace Shared.Contracts.Dtos;
 
 public class CaseGoalDto
 {

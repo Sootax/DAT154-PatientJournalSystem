@@ -1,8 +1,7 @@
-﻿using System.Net.Http;
-using System.Net.Http.Json;
-using Simulation.Desktop.Models;
+﻿using System.Net.Http.Json;
+using Shared.Contracts.Dtos;
 
-namespace Simulation.Desktop.Services;
+namespace Shared.Application.Services;
 
 public class ApiService
 {

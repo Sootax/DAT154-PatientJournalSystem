@@ -1,10 +1,8 @@
-﻿using System.Linq;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Threading;
-using Simulation.Desktop.Models;
-using Simulation.Desktop.Services;
+using Shared.Contracts.Dtos;
+using Shared.Application.Services;
 
 namespace Simulation.Desktop;
 
