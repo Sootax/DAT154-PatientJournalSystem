@@ -1,0 +1,14 @@
+#!/bin/sh
+
+echo "Checking code formatting..."
+dotnet format PatientJournalSystem.slnx --verify-no-changes
+
+if [ $? -ne 0 ]; then
+  echo ""
+  echo "Formatting issues found."
+  echo "Run 'dotnet format PatientJournalSystem.slnx' and commit again."
+  exit 1
+fi
+
+echo "Formatting check passed."
+exit 0
