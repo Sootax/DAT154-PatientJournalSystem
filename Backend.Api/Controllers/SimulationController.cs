@@ -69,7 +69,7 @@ public class SimulationController : ControllerBase
     }
 
     [HttpGet("{sessionId}")]
-    public async Task<ActionResult<SimulationSession>> GetSession(int sessionId) 
+    public async Task<ActionResult<SimulationSession>> GetSession(int sessionId)
     {
         var session = await _db.SimulationSessions
             .Include((session) => session.Interventions)

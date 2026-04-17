@@ -1,5 +1,5 @@
-﻿using System.Net.Http.Json;
-using Shared.Contracts.Dtos;
+﻿using Shared.Contracts.Dtos;
+using System.Net.Http.Json;
 
 namespace Shared.Application.Services;
 

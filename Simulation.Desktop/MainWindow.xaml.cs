@@ -1,8 +1,8 @@
-﻿using System.Windows;
+﻿using Shared.Application.Services;
+using Shared.Contracts.Dtos;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
-using Shared.Contracts.Dtos;
-using Shared.Application.Services;
 
 namespace Simulation.Desktop;
 
@@ -102,7 +102,8 @@ public partial class MainWindow : Window
             _currentSession = null;
             _autoRefreshTimer.Stop();
             AutoRefreshStatusText.Text = "Auto-refresh: Off";
-        } catch (Exception ex)
+        }
+        catch (Exception ex)
         {
             MessageBox.Show($"Failed to load active case: {ex.Message}");
         }
@@ -136,7 +137,8 @@ public partial class MainWindow : Window
             AutoRefreshStatusText.Text = "Auto-refresh: On (5s)";
 
             await RefreshSessionAsync(showMessageOnMissingSession: false);
-        } catch (Exception ex)
+        }
+        catch (Exception ex)
         {
             MessageBox.Show($"Failed to start session: {ex.Message}");
         }
@@ -281,7 +283,8 @@ public partial class MainWindow : Window
             ClearInterventionInputs();
 
             await RefreshSessionAsync(showMessageOnMissingSession: false);
-        } catch (Exception ex)
+        }
+        catch (Exception ex)
         {
             MessageBox.Show(ex.ToString());
         }
@@ -370,9 +373,10 @@ public partial class MainWindow : Window
         if (caseScenario.Allergies.Count == 0)
         {
             AllergiesListBox.Items.Add("No allergies registered.");
-        } else
+        }
+        else
         {
-            foreach(var allergy in caseScenario.Allergies)
+            foreach (var allergy in caseScenario.Allergies)
             {
                 AllergiesListBox.Items.Add($"{allergy.Substance} - {allergy.Reaction}");
             }
@@ -381,7 +385,8 @@ public partial class MainWindow : Window
         if (caseScenario.Medications.Count == 0)
         {
             MedicationsListBox.Items.Add("No medications registered.");
-        } else
+        }
+        else
         {
             foreach (var medication in caseScenario.Medications)
             {
@@ -392,7 +397,8 @@ public partial class MainWindow : Window
         if (caseScenario.Goals.Count == 0)
         {
             GoalsListBox.Items.Add("No goals registered.");
-        } else
+        }
+        else
         {
             foreach (var goal in caseScenario.Goals)
             {
@@ -414,14 +420,15 @@ public partial class MainWindow : Window
             return;
         }
 
-        ShowVitals(new VitalSignsRecordDto {
-                SystolicBp = caseScenario.InitialVitals.SystolicBp,
-                DiastolicBp = caseScenario.InitialVitals.DiastolicBp,
-                HeartRate = caseScenario.InitialVitals.HeartRate,
-                RespiratoryRate = caseScenario.InitialVitals.RespiratoryRate,
-                OxygenSaturation = caseScenario.InitialVitals.OxygenSaturation,
-                TemperatureCelsius = caseScenario.InitialVitals.TemperatureCelsius,
-            });
+        ShowVitals(new VitalSignsRecordDto
+        {
+            SystolicBp = caseScenario.InitialVitals.SystolicBp,
+            DiastolicBp = caseScenario.InitialVitals.DiastolicBp,
+            HeartRate = caseScenario.InitialVitals.HeartRate,
+            RespiratoryRate = caseScenario.InitialVitals.RespiratoryRate,
+            OxygenSaturation = caseScenario.InitialVitals.OxygenSaturation,
+            TemperatureCelsius = caseScenario.InitialVitals.TemperatureCelsius,
+        });
     }
 
     private void UpdateSessionInfo()
