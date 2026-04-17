@@ -258,3 +258,25 @@ This solution is built with .NET and uses a combination of:
 - Desktop UI technology for simulation
 - A separate .NET frontend technology for teacher assessment
 - Shared .NET class libraries
+
+- ## Git Hook Setup
+
+This repository uses a shared Git pre-commit hook to check code formatting before a commit is created.
+
+### Hook location
+
+The hook is stored in:
+
+```text
+.githooks/pre-commit
+```
+*** Enable to hook locally
+```text
+git config core.hooksPath .githooks
+```
+** What happens after setup
+After the hook is configured, it runs automatically on every commit.
+If formatting issues are detected:
+- the commit is blocked
+- you must run `dotnet format`
+- then stage the changes and commit again
