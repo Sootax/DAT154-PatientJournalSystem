@@ -1,0 +1,168 @@
+﻿<Window x:Class="Simulation.Desktop.MainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:local="clr-namespace:Simulation.Desktop" Title="Simulation Interface" Width="1250" Height="760" mc:Ignorable="d">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="2.1*" />
+            <RowDefinition Height="1.2*" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Margin="0,0,0,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="20" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0" Name="LoadCaseButton" Width="130" Margin="0,0,10,0" Click="LoadCaseButton_Click">
+                Load Active Case
+            </Button>
+
+            <Button Grid.Column="1" Name="StartSessionButton" Width="130" Margin="0,0,10,0" Click="StartSessionButton_Click" IsEnabled="False">
+                Start Session
+            </Button>
+
+            <Button Grid.Column="2" Name="RefreshSessionButton" Width="120" Margin="0,0,10,0" IsEnabled="False" Click="RefreshSessionButton_Click">
+                Refresh Session
+            </Button>
+
+            <TextBlock Grid.Column="4" Name="AutoRefreshStatusText" Margin="0,0,10,0" VerticalAlignment="Center" FontWeight="Bold" Text="Auto-refresh: Off" />
+
+            <StackPanel Grid.Column="6" Orientation="Horizontal" VerticalAlignment="Center">
+                <TextBlock Name="SessionIdText" Margin="0,0,12,0" Text="Session ID: -" />
+                <TextBlock Name="SessionStatusText" Text="Status: -" />
+            </StackPanel>
+        </Grid>
+
+        <Grid Grid.Row="1" Margin="0,0,0,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2.7*" />
+                <ColumnDefinition Width="1.1*" />
+                <ColumnDefinition Width="2.2*" />
+            </Grid.ColumnDefinitions>
+
+            <GroupBox Header="Patient" Grid.Column="0" Margin="0,0,10,0">
+                <Grid Margin="10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="1*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <GroupBox Header="Demographics" Margin="0,0,10,10">
+                        <StackPanel Margin="10">
+                            <TextBlock Name="PatientNameText" Text="Name: -" />
+                            <TextBlock Name="PatientAgeText" Text="Age: -" />
+                            <TextBlock Name="PatientSexText" Text="Sex: -" />
+                            <TextBlock Name="PatientWeightText" Text="Weight: -" />
+                        </StackPanel>
+                    </GroupBox>
+
+                    <GroupBox Header="Clinical Information" Grid.Column="1" Margin="0,0,0,10">
+                        <StackPanel Margin="10">
+                            <TextBlock Name="DiagnosisText" Text="Diagnosis: -" />
+                            <TextBlock Name="MedicalHistoryText" Text="Medical history: -" TextWrapping="Wrap" />
+                            <TextBlock Name="CaseTitleText" Text="Case: -" />
+                        </StackPanel>
+                    </GroupBox>
+
+                    <GroupBox Header="Allergies" Grid.Row="1" Margin="0,0,10,0">
+                        <ListBox Name="AllergiesListBox" Margin="10" />
+                    </GroupBox>
+
+                    <GroupBox Header="Medications / Goals" Grid.Row="1" Grid.Column="1">
+                        <Grid Margin="10">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+
+                            <GroupBox Header="Medications" Margin="0,0,0,8">
+                                <ListBox Name="MedicationsListBox" Margin="5" />
+                            </GroupBox>
+
+                            <GroupBox Header="Goals" Grid.Row="1">
+                                <ListBox Name="GoalsListBox" Margin="5" />
+                            </GroupBox>
+                        </Grid>
+                    </GroupBox>
+                </Grid>
+            </GroupBox>
+
+            <Grid Grid.Column="1" Margin="0,0,10,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="1*" />
+                </Grid.RowDefinitions>
+
+                <GroupBox Header="Current Vitals" Margin="0,0,0,10">
+                    <StackPanel Margin="10">
+                        <TextBlock Name="BpText" Text="BP: -" Margin="0,0,0,6" />
+                        <TextBlock Name="HrText" Text="HR: -" Margin="0,0,0,6" />
+                        <TextBlock Name="RrText" Text="RR: -" Margin="0,0,0,6" />
+                        <TextBlock Name="Spo2Text" Text="SpO2: -" Margin="0,0,0,6" />
+                        <TextBlock Name="TempText" Text="Temp: -" />
+                    </StackPanel>
+                </GroupBox>
+
+                <GroupBox Header="Session Details" Grid.Row="1">
+                    <StackPanel Margin="10">
+                        <TextBlock Name="SessionStartedText" Text="Started: -" />
+                        <TextBlock Name="SessionEndedText" Text="Ended: -" />
+                        <TextBlock Name="CurrentCaseStatusText" Text="Case loaded: No" />
+                    </StackPanel>
+                </GroupBox>
+            </Grid>
+
+            <GroupBox Header="Intervention" Grid.Column="2">
+                <StackPanel Margin="10">
+                    <TextBlock Text="Type" />
+                    <ComboBox Name="TypeComboBox" Width="180" Margin="0,0,0,8" HorizontalAlignment="Left">
+                        <ComboBoxItem Content="Medication" />
+                        <ComboBoxItem Content="Fluid" />
+                        <ComboBoxItem Content="Oxygen" />
+                        <ComboBoxItem Content="Repositioning" />
+                        <ComboBoxItem Content="Other" />
+                    </ComboBox>
+
+                    <TextBlock Text="Drug Name / Intervention Name" />
+                    <TextBox Name="DrugNameTextBox" Margin="0,0,0,8" />
+
+                    <TextBlock Text="Dose / Amount" />
+                    <TextBox Name="DoseTextBox" Margin="0,0,0,8" />
+
+                    <TextBlock Text="Route" />
+                    <TextBox Name="RouteTextBox" Margin="0,0,0,8" />
+
+                    <TextBlock Text="Description" />
+                    <TextBox Name="DescriptionTextBox" Height="70" Margin="0,0,0,10" AcceptsReturn="True" TextWrapping="Wrap" />
+
+                    <Button x:Name="RegisterInterventionButton" Width="160" Click="RegisterInterventionButton_Click" IsEnabled="False">
+                        Register Intervention
+                    </Button>
+                </StackPanel>
+            </GroupBox>
+        </Grid>
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+
+            <GroupBox Header="Timeline" Margin="0,0,10,0">
+                <ListBox Name="TimelineListBox" Margin="10" />
+            </GroupBox>
+
+            <GroupBox Header="Registered Interventions" Grid.Column="1">
+                <ListBox Name="InterventionsListBox" Margin="10" />
+            </GroupBox>
+        </Grid>
+    </Grid>
+</Window>

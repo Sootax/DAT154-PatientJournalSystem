@@ -1,0 +1,10 @@
+<Solution>
+  <Project Path="Backend.Api/Backend.Api.csproj" />
+  <Project Path="CaseSetup.Web/CaseSetup.Web.csproj" />
+  <Project Path="Shared.Application/Shared.Application.csproj" />
+  <Project Path="Shared.Contracts/Shared.Contracts.csproj" />
+  <Project Path="Shared.Domain/Shared.Domain.csproj" />
+  <Project Path="Shared.Infrastructure/Shared.Infrastructure.csproj" />
+  <Project Path="Simulation.Desktop/Simulation.Desktop.csproj" />
+  <Project Path="TeacherAssessment/TeacherAssessment.csproj" />
+</Solution>

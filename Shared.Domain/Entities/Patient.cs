@@ -1,0 +1,12 @@
+﻿namespace Shared.Domain.Entities;
+
+public class Patient
+{
+    public int PatientId { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public int Age { get; set; }
+    public string Sex { get; set; } = string.Empty;
+    public double WeightKg { get; set; }
+    public string MedicalHistory { get; set; } = string.Empty;
+    public string CurrentDiagnosis { get; set; } = string.Empty;
+}
