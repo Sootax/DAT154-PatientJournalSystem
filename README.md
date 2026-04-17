@@ -274,7 +274,7 @@ The hook is stored in:
 ```text
 git config core.hooksPath .githooks
 ```
-** What happens after setup
+### What happens after setup
 After the hook is configured, it runs automatically on every commit.
 If formatting issues are detected:
 - the commit is blocked
