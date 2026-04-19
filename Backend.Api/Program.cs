@@ -43,6 +43,15 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
+// ----- For testing - START -------
+if (app.Environment.IsDevelopment())
+{
+    using var scope = app.Services.CreateScope();
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    Backend.Api.Development.DevSeedData.Initialize(db);
+}
+// ----- For testing - END ---------
+
 app.UseSwagger();
 app.UseSwaggerUI();
 
