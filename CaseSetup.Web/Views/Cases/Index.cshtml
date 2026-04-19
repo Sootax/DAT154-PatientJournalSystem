@@ -1,0 +1,29 @@
+﻿@model IReadOnlyList<Shared.Contracts.Dtos.CaseScenarioDto>
+
+@{
+    ViewData["Title"] = "Cases";
+}
+
+<h1>Cases</h1>
+
+@if (Model.Count == 0) {
+    <p>No cases found.</p>
+} else {
+    <ul>
+        @foreach (var caseScenario in Model) {
+            <li>
+                <strong>@caseScenario.Title</strong>
+                @if (caseScenario.IsActive) {
+                    <span>(active)</span>
+                } else {
+                    <form asp-controller="Cases" asp-action="Activate" method="post" style="display:inline">
+                        <input type="hidden" name="id" value="@caseScenario.CaseScenarioId" />
+                        <button type="submit">Activate</button>
+                    </form>
+                }
+                <br />
+                <small>@caseScenario.Patient?.Name — @caseScenario.Description</small>
+            </li>
+        }
+    </ul>
+}
