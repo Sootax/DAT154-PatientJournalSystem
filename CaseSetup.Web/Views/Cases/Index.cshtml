@@ -4,6 +4,12 @@
     ViewData["Title"] = "Cases";
 }
 
+<p>Logged in as: @Context.Session.GetString("Username")</p>
+
+<form asp-controller="Account" asp-action="Logout" method="post">
+    <button type="submit">Log out</button>
+</form>
+
 <h1>Cases</h1>
 
 @if (Model.Count == 0) {

@@ -40,4 +40,12 @@ public class AccountController : Controller
 
         return RedirectToAction("Index", "Cases");
     }
+
+    [HttpPost]
+    public IActionResult Logout()
+    {
+        HttpContext.Session.Clear();
+
+        return RedirectToAction("Login", "Account");
+    }
 }
