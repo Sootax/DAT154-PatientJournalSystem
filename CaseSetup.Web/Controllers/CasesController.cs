@@ -15,8 +15,13 @@ public class CasesController : Controller
 
     public async Task<IActionResult> Index()
     {
-       IReadOnlyList<CaseScenarioDto> cases = await _caseApiClient.GetAllCasesAsync();
-       return View(cases);
+        if (HttpContext.Session.GetString("Username") is null)
+        {
+            return RedirectToAction("Login", "Account");
+        }
+
+        IReadOnlyList<CaseScenarioDto> cases = await _caseApiClient.GetAllCasesAsync();
+        return View(cases);
     }
 
     [HttpPost]

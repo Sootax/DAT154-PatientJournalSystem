@@ -1,0 +1,18 @@
+﻿@using CaseSetup.Web.Models
+
+@model LoginViewModel
+
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <p style="color:red">@Model.ErrorMessage</p>
+}
+
+<form asp-controller="Account" asp-action="Login" method="post">
+    <label asp-for="Username"></label>
+    <input asp-for="Username" />
+
+    <label asp-for="Password"></label>
+    <input asp-for="Password" type="password" />
+
+    <button type="submit">Log In</button>
+</form>
