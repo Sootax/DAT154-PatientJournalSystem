@@ -2,17 +2,26 @@
 
 @model LoginViewModel
 
-@if (!string.IsNullOrEmpty(Model.ErrorMessage))
-{
-    <p style="color:red">@Model.ErrorMessage</p>
-}
+<div class="login-form">
+    <h1>Log In</h1>
 
-<form asp-controller="Account" asp-action="Login" method="post">
-    <label asp-for="Username"></label>
-    <input asp-for="Username" />
+    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+    {
+        <p style="color:red">@Model.ErrorMessage</p>
+    }
 
-    <label asp-for="Password"></label>
-    <input asp-for="Password" type="password" />
+    <form asp-controller="Account" asp-action="Login" method="post">
+        <div class="form-group">
+            <label asp-for="Username"></label>
+            <input asp-for="Username" />
+        </div>
 
-    <button type="submit">Log In</button>
-</form>
+        <div class="form-group">
+            <label asp-for="Password"></label>
+            <input asp-for="Password" type="password" />
+        </div>
+
+        <button type="submit" class="btn-primary">Log In</button>
+    </form>
+
+</div>
