@@ -359,7 +359,7 @@ public partial class MainWindow : Window
         PatientAgeText.Text = $"Age: {(caseScenario.Patient is null ? "-" : caseScenario.Patient.Age)}";
         PatientSexText.Text = $"Sex: {caseScenario.Patient?.Sex ?? "-"}";
         PatientWeightText.Text = $"Weight: {(caseScenario.Patient is null ? "-" : caseScenario.Patient.WeightKg)}";
-        DiagnosisText.Text = $"Diagnosis: {caseScenario.Patient?.CurrentDiagnoses ?? "-"}";
+        DiagnosisText.Text = $"Diagnosis: {caseScenario.Patient?.CurrentDiagnosis ?? "-"}";
         MedicalHistoryText.Text = $"Medical history: {caseScenario.Patient?.MedicalHistory ?? "-"}";
         CaseTitleText.Text = $"Case: {caseScenario.Title}";
     }
