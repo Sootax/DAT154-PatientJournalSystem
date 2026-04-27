@@ -31,4 +31,21 @@ public class CasesController : Controller
 
         return RedirectToAction(nameof(Index));
     }
+
+    public async Task<IActionResult> Details(int id)
+    {
+        if (HttpContext.Session.GetString("Username") is null)
+        {
+            return RedirectToAction("Login", "Account");
+        }
+
+        var caseScenario = await _caseApiClient.GetCaseByIdAsync(id);
+
+        if (caseScenario is null)
+        {
+            return NotFound();
+        }
+
+        return View(caseScenario);
+    }
 }

@@ -1,5 +1,5 @@
 ﻿using Shared.Contracts.Dtos;
-using System.Net.Http.Json;
+using System.Net;
 
 namespace CaseSetup.Web.Services
 {
@@ -24,6 +24,20 @@ namespace CaseSetup.Web.Services
             var response = await _httpClient.PostAsync($"api/cases/{caseId}/activate", null);
 
             response.EnsureSuccessStatusCode();
+        }
+
+        public async Task<CaseScenarioDto?> GetCaseByIdAsync(int id)
+        {
+            var response = await _httpClient.GetAsync($"api/cases/{id}");
+
+            if (response.StatusCode == HttpStatusCode.NotFound)
+            {
+                return null;
+            }
+
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadFromJsonAsync<CaseScenarioDto>();
         }
     }
 }

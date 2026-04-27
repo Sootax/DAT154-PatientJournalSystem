@@ -1,0 +1,111 @@
+﻿@model Shared.Contracts.Dtos.CaseScenarioDto
+
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<h1>@Model.Title</h1>
+<p>@Model.Description</p>
+
+@if (Model.IsActive)
+{
+    <span class="active-badge">Active</span>
+}
+
+<section>
+    <h2>Patient</h2>
+    @if (Model.Patient is not null) 
+    {
+        <p><strong>Name:</strong> @Model.Patient.Name</p>
+        <p><strong>Age:</strong> @Model.Patient.Age</p>
+        <p><strong>Sex:</strong> @Model.Patient.Sex</p>
+        <p><strong>Weight:</strong> @Model.Patient.WeightKg kg</p>
+        <p><strong>Medical history:</strong> @Model.Patient.MedicalHistory</p>
+        <p><strong>Current diagnosis:</strong> @Model.Patient.CurrentDiagnosis</p>
+    } 
+    else 
+    {
+        <p>No patient information available.</p>
+    }
+</section>
+
+<section>
+    <h2>Initial Vitals</h2>
+        @if (Model.InitialVitals is not null)
+        {
+            <p><strong>Blood Pressure (BP):</strong> @Model.InitialVitals.SystolicBp / @Model.InitialVitals.DiastolicBp</p>
+            <p><strong>Heart Rate (HR):</strong> @Model.InitialVitals.HeartRate</p>
+            <p><strong>Respiratory Rate (RR):</strong> @Model.InitialVitals.RespiratoryRate</p>
+            <p><strong>Oxygen Saturation (SpO2):</strong> @Model.InitialVitals.OxygenSaturation</p>
+            <p><strong>Temperature (Celsius):</strong> @Model.InitialVitals.TemperatureCelsius °C</p>
+        }
+        else
+        {
+            <p>No vital signs available.</p>
+        }
+
+    </section>
+
+
+    <section>
+    <h2>Medications</h2>
+    @if (Model.Medications.Count > 0)
+    {
+        <ul>
+            @foreach (var medication in Model.Medications)
+            {
+                <li>@medication.DrugName — @medication.Dose (@medication.Route)</li>
+            }
+        </ul>
+    }
+    else
+    {
+        <p>None.</p>
+    }
+</section>
+
+<section>
+    <h2>Allergies</h2>
+    @if (Model.Allergies is not null && Model.Allergies.Count > 0)
+    {
+        <ul>
+            @foreach (var allergy in Model.Allergies)
+            {
+                <li>@allergy.Substance — @allergy.Reaction</li>
+            }
+        </ul>
+    }
+    else
+    {
+        <p>None.</p>
+    }
+</section>
+
+<section>
+    <h2>Goals</h2>
+    @if (Model.Goals.Count > 0)
+    {
+        <ul>
+            @foreach (var goal in Model.Goals)
+            {
+                <li>@goal.Description (@goal.TimeLimitSeconds s)</li>
+            }
+        </ul>
+    }
+    else
+    {
+        <p>None.</p>
+    }
+</section>
+
+<p>
+    <a asp-action="Index">← Back to list</a>
+</p>
+
+@if (!Model.IsActive)
+{
+    <form asp-controller="Cases" asp-action="Activate" method="post">
+        <input type="hidden" name="id" value="@Model.CaseScenarioId" />
+        <button type="submit">Activate this case</button>
+    </form>
+}

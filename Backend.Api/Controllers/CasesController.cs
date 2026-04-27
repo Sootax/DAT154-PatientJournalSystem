@@ -77,4 +77,23 @@ public class CasesController : ControllerBase
 
         return Ok(activeCase);
     }
+
+    [HttpGet("{id}")]
+    public async Task<ActionResult<CaseScenario>> GetCaseById(int id)
+    {
+        var caseScenario = await _db.CaseScenarios
+            .Include((c) => c.Patient)
+            .Include((c) => c.InitialVitals)
+            .Include((c) => c.Medications)
+            .Include((c) => c.Allergies)
+            .Include((c) => c.Goals)
+            .FirstOrDefaultAsync((c) => c.CaseScenarioId == id);
+
+        if (caseScenario is null)
+        {
+            return NotFound();
+        }
+
+        return Ok(caseScenario);
+    }
 }

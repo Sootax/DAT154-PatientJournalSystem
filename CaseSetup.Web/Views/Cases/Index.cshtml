@@ -12,7 +12,9 @@
     <ul>
         @foreach (var caseScenario in Model) {
             <li>
-                <strong>@caseScenario.Title</strong>
+                <a asp-action="Details" asp-route-id="@caseScenario.CaseScenarioId">
+                    <strong>@caseScenario.Title</strong>
+                </a>
                 @if (caseScenario.IsActive) {
                     <span>(active)</span>
                 } else {

@@ -101,5 +101,13 @@ body {
         width: 100%;
     }
 
-/* ========== Cases page ========== */
-/* case list, activate buttons */
+/* ========== Badges ========== */
+
+.active-badge {
+    background-color: #27ae60;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.85em;
+    margin-left: 8px;
+}

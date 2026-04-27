@@ -8,5 +8,5 @@ public class PatientDto
     public string Sex { get; set; } = string.Empty;
     public double WeightKg { get; set; }
     public string MedicalHistory { get; set; } = string.Empty;
-    public string CurrentDiagnoses { get; set; } = string.Empty;
+    public string CurrentDiagnosis { get; set; } = string.Empty;
 }
