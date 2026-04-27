@@ -1,0 +1,100 @@
+﻿@page "/sessions/{SessionId:int}"
+@using Shared.Contracts.Dtos
+@rendermode InteractiveServer
+
+<PageTitle>Session @SessionId</PageTitle>
+
+@if (!SessionState.IsLoggedIn) {
+    <p>You must <a href="/login">log in</a> first.</p>
+} else if (_session is null) {
+    <p>Loading session @SessionId...</p>
+} else {
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1>Session @_session.SimulationSessionId — @_session.Status</h1>
+        <div>
+            <a href="/sessions" class="btn btn-secondary me-2">Back to list</a>
+            @if (_session.Status == "Running") {
+                <button class="btn btn-danger" @onclick="EndSessionAsync" disabled="@_isEnding">
+                    @(_isEnding ? "Ending..." : "End session")
+                </button>
+            } else {
+                <a href="@($"/sessions/{SessionId}/debrief")" class="btn btn-primary">View debrief</a>
+            }
+        </div>
+    </div>
+
+    <p class="text-muted">
+        Started: @_session.StartedAt.ToLocalTime().ToString("g")
+        @if (_session.EndedAt.HasValue) {
+            <span> &middot; Ended: @_session.EndedAt.Value.ToLocalTime().ToString("g")</span>
+        }
+    </p>
+
+    <div class="row">
+        <div class="col-md-7">
+            <h3>Timeline</h3>
+            @if (_session.TimelineEvents.Count == 0) {
+                <p class="text-muted">No events yet.</p>
+            } else {
+                <ul class="list-group mb-4">
+                    @foreach (var ev in _session.TimelineEvents.OrderByDescending(e => e.Timestamp)) {
+                        <li class="list-group-item">
+                            <small class="text-muted">@ev.Timestamp.ToLocalTime().ToString("HH:mm:ss")</small>
+                            <div>@ev.Description</div>
+                        </li>
+                    }
+                </ul>
+            }
+
+            <h3>Interventions</h3>
+            @if (_session.Interventions.Count == 0) {
+                <p class="text-muted">No interventions registered yet.</p>
+            } else {
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Type</th>
+                            <th>Drug</th>
+                            <th>Dose</th>
+                            <th>Route</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var iv in _session.Interventions.OrderByDescending(i => i.Timestamp)) {
+                            <tr>
+                                <td>@iv.Timestamp.ToLocalTime().ToString("HH:mm:ss")</td>
+                                <td>@iv.Type</td>
+                                <td>@(iv.DrugName ?? "-")</td>
+                                <td>@(iv.Dose ?? "-")</td>
+                                <td>@(iv.Route ?? "-")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        </div>
+
+        <div class="col-md-5">
+            @if (_session.Status == "Running") {
+                <h3>Add observation</h3>
+                <div class="mb-3">
+                    <textarea class="form-control" rows="3" @bind="_observationNote"
+                              placeholder="e.g. Student did not check allergy list before administration"></textarea>
+                </div>
+                <button class="btn btn-primary" @onclick="SubmitObservationAsync"
+                        disabled="@(_isSubmittingObservation || string.IsNullOrWhiteSpace(_observationNote))">
+                    @(_isSubmittingObservation ? "Saving..." : "Add observation")
+                </button>
+
+                <p class="text-muted mt-3 small">
+                    Auto-refresh every @PollingIntervalSeconds seconds.
+                </p>
+            }
+        </div>
+    </div>
+}
+
+@if (!string.IsNullOrEmpty(_errorMessage)) {
+    <div class="alert alert-danger mt-3">@_errorMessage</div>
+}

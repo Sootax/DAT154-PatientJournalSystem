@@ -1,0 +1,66 @@
+﻿@page "/login"
+@using Shared.Contracts.Dtos
+@using Shared.Contracts.Requests
+@using TeacherAssessment.Services
+@inject IAuthApiClient AuthApi
+@inject TeacherSessionState SessionState
+@inject NavigationManager Navigation
+@rendermode InteractiveServer
+
+<PageTitle>Login</PageTitle>
+
+<div class="login-form mx-auto mt-5 p-4">
+    <h1 class="text-center mb-4">Log In</h1>
+
+    <EditForm Model="_model" OnValidSubmit="HandleLoginAsync" FormName="loginForm">
+        <div class="mb-3">
+            <label for="username" class="form-label">Username</label>
+            <InputText id="username" class="form-control" @bind-Value="_model.Username" />
+        </div>
+
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <InputText id="password" type="password" class="form-control" @bind-Value="_model.Password" />
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100" disabled="@_isSubmitting">
+            @(_isSubmitting ? "Logging in..." : "Log in")
+        </button>
+    </EditForm>
+
+    @if (!string.IsNullOrEmpty(_errorMessage)) {
+        <div class="alert alert-danger mt-3">@_errorMessage</div>
+    }
+</div>
+
+@code {
+    private readonly LoginRequest _model = new();
+    private bool _isSubmitting;
+    private string? _errorMessage;
+
+    private async Task HandleLoginAsync() {
+        _errorMessage = null;
+        _isSubmitting = true;
+
+        try {
+            UserDto? user = await AuthApi.LoginAsync(_model);
+
+            if (user is null) {
+                _errorMessage = "Invalid username or password.";
+                return;
+            }
+
+            if (user.Role != "Teacher") {
+                _errorMessage = "Only teachers can use this application.";
+                return;
+            }
+
+            SessionState.SetUser(user);
+            Navigation.NavigateTo("/sessions");
+        } catch (HttpRequestException) {
+            _errorMessage = "Could not reach the backend. Is the API running?";
+        } finally {
+            _isSubmitting = false;
+        }
+    }
+}

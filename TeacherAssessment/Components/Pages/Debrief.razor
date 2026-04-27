@@ -1,0 +1,40 @@
+﻿@page "/sessions/{SessionId:int}/debrief"
+@using Shared.Contracts.Dtos
+@rendermode InteractiveServer
+
+<PageTitle>Debrief — Session @SessionId</PageTitle>
+
+@if (!SessionState.IsLoggedIn) {
+    <p>You must <a href="/login">log in</a> first.</p>
+} else if (_isLoading) {
+    <p>Loading debrief for session @SessionId...</p>
+} else if (_report is null) {
+    <h1>Debrief — Session @SessionId</h1>
+    <div class="alert alert-warning">
+        No debrief report found for this session. Has the session been ended?
+    </div>
+    <a href="/sessions" class="btn btn-secondary">Back to list</a>
+} else {
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1>Debrief — Session @_report.SimulationSessionId</h1>
+        <div>
+            <a href="/sessions" class="btn btn-secondary me-2">Back to list</a>
+            <button class="btn btn-primary" @onclick="PrintAsync">Print</button>
+        </div>
+    </div>
+
+    <p class="text-muted">
+        Generated: @_report.GeneratedAt.ToLocalTime().ToString("g")
+    </p>
+
+    <div class="card">
+        <div class="card-header">Summary</div>
+        <div class="card-body">
+            <pre class="summary-text mb-0">@_report.Summary</pre>
+        </div>
+    </div>
+}
+
+@if (!string.IsNullOrEmpty(_errorMessage)) {
+    <div class="alert alert-danger mt-3">@_errorMessage</div>
+}

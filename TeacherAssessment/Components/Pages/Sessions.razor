@@ -1,0 +1,87 @@
+﻿@page "/sessions"
+@using Shared.Contracts.Dtos
+@using TeacherAssessment.Services
+@inject ISessionApiClient SessionApi
+@inject TeacherSessionState SessionState
+@inject NavigationManager Navigation
+@rendermode InteractiveServer
+
+<PageTitle>Sessions</PageTitle>
+
+<h1>Simulation Sessions</h1>
+
+@if (!SessionState.IsLoggedIn) {
+    <p>You must <a href="/login">log in</a> first.</p>
+} else if (_sessions is null) {
+    <p>Loading sessions...</p>
+} else if (_sessions.Count == 0) {
+    <p>No simulation sessions found. Start one from the Simulation desktop application.</p>
+} else {
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Case</th>
+                <th>Patient</th>
+                <th>Started</th>
+                <th>Status</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var session in _sessions) {
+                <tr>
+                    <td>@session.SimulationSessionId</td>
+                    <td>@session.CaseTitle</td>
+                    <td>@session.PatientName</td>
+                    <td>@session.StartedAt.ToLocalTime().ToString("g")</td>
+                    <td>@session.Status</td>
+                    <td>
+                        <button class="btn btn-sm btn-primary" @onclick="() => OpenSession(session.SimulationSessionId)">
+                            Open
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <button class="btn btn-secondary" @onclick="LoadSessionsAsync" disabled="@_isLoading">
+        @(_isLoading ? "Refreshing..." : "Refresh")
+    </button>
+}
+
+@if (!string.IsNullOrEmpty(_errorMessage)) {
+    <div class="alert alert-danger mt-3">@_errorMessage</div>
+}
+
+@code {
+    private IReadOnlyList<SimulationSessionSummaryDto>? _sessions;
+    private bool _isLoading;
+    private string? _errorMessage;
+
+    protected override async Task OnInitializedAsync() {
+        if (!SessionState.IsLoggedIn) {
+            return;
+        }
+
+        await LoadSessionsAsync();
+    }
+
+    private async Task LoadSessionsAsync() {
+        _errorMessage = null;
+        _isLoading = true;
+
+        try {
+            _sessions = await SessionApi.GetSessionsAsync();
+        } catch (HttpRequestException) {
+            _errorMessage = "Could not reach the backend.";
+        } finally {
+            _isLoading = false;
+        }
+    }
+
+    private void OpenSession(int sessionId) {
+        Navigation.NavigateTo($"/sessions/{sessionId}");
+    }
+}
