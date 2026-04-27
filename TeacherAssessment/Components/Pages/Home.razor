@@ -1,7 +1,20 @@
 ﻿@page "/"
+@rendermode InteractiveServer
 
-<PageTitle>Home</PageTitle>
+<PageTitle>Teacher Assessment</PageTitle>
 
-<h1>Hello, world!</h1>
+<div class="text-center mt-5">
+    <h1>Teacher Assessment</h1>
+    <p class="lead text-muted">
+        Real-time observation and debrief tool for nursing simulation training.
+    </p>
 
-Welcome to your new app.
+    <div class="mt-4">
+        @if (SessionState.IsLoggedIn) {
+            <p>Logged in as <strong>@SessionState.CurrentUser!.Username</strong>.</p>
+            <a href="/sessions" class="btn btn-primary btn-lg">View sessions</a>
+        } else {
+            <a href="/login" class="btn btn-primary btn-lg">Log in</a>
+        }
+    </div>
+</div>

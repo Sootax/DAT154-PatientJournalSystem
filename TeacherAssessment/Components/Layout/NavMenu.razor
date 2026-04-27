@@ -1,4 +1,7 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
+﻿@implements IDisposable
+@rendermode InteractiveServer
+
+<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="">TeacherAssessment</a>
     </div>
@@ -14,17 +17,30 @@
             </NavLink>
         </div>
 
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Counter
-            </NavLink>
-        </div>
+        @if (SessionState.IsLoggedIn) {
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="sessions">
+                    <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Sessions
+                </NavLink>
+            </div>
 
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="weather">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Weather
-            </NavLink>
-        </div>
+            <div class="nav-item px-3 mt-3">
+                <small class="text-light px-3">
+                    Signed in as <strong>@SessionState.CurrentUser!.Username</strong>
+                </small>
+            </div>
+
+            <div class="nav-item px-3">
+                <button class="nav-link btn btn-link text-start w-100" @onclick="LogoutAsync">
+                    <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Log out
+                </button>
+            </div>
+        } else {
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="login">
+                    <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Log in
+                </NavLink>
+            </div>
+        }
     </nav>
 </div>
-
