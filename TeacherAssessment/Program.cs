@@ -1,10 +1,25 @@
 using TeacherAssessment.Components;
+using TeacherAssessment.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+var apiBaseUrl = builder.Configuration["BackendApi:BaseUrl"]
+    ?? throw new InvalidOperationException("BackendApi:BaseUrl is not configured.");
+
+builder.Services.AddHttpClient<IAuthApiClient, AuthApiClient>(client =>
+    client.BaseAddress = new Uri(apiBaseUrl));
+
+builder.Services.AddHttpClient<ISessionApiClient, SessionApiClient>(client =>
+    client.BaseAddress = new Uri(apiBaseUrl));
+
+builder.Services.AddHttpClient<IObservationApiClient, ObservationApiClient>(client =>
+    client.BaseAddress = new Uri(apiBaseUrl));
+
+builder.Services.AddScoped<TeacherSessionState>();
 
 var app = builder.Build();
 
