@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Shared.Application.Services;
+using Shared.Contracts.Dtos;
 using Shared.Domain.Entities;
 using Shared.Infrastructure.Persistence;
 
@@ -128,7 +129,7 @@ public class SimulationController : ControllerBase
 
 
     [HttpPost("{sessionId}/end")]
-    public async Task<ActionResult<DebriefReport>> EndSession(int sessionId)
+    public async Task<ActionResult<DebriefReportDto>> EndSession(int sessionId)
     {
         var session = await _db.SimulationSessions
             .Include((session) => session.Interventions)
@@ -155,6 +156,55 @@ public class SimulationController : ControllerBase
 
         await _db.SaveChangesAsync();
 
-        return Ok(report);
+        return Ok(MapToDto(report));
+    }
+
+    [HttpGet]
+    public async Task<ActionResult<List<SimulationSessionSummaryDto>>> GetSessions()
+    {
+        var sessions = await _db.SimulationSessions
+            .OrderByDescending((s) => s.StartedAt)
+            .Select((s) => new SimulationSessionSummaryDto
+            {
+                SimulationSessionId = s.SimulationSessionId,
+                CaseScenarioId = s.CaseScenarioId,
+                CaseTitle = s.CaseScenario != null ? s.CaseScenario.Title : string.Empty,
+                PatientName = s.CaseScenario != null && s.CaseScenario.Patient != null
+                    ? s.CaseScenario.Patient.Name
+                    : string.Empty,
+                StartedAt = s.StartedAt,
+                EndedAt = s.EndedAt,
+                Status = s.Status,
+            })
+            .ToListAsync();
+
+        return Ok(sessions);
+    }
+
+    [HttpGet("{sessionId}/debrief")]
+    public async Task<ActionResult<DebriefReportDto>> GetDebrief(int sessionId)
+    {
+        var report = await _db.DebriefReports
+            .Where((r) => r.SimulationSessionId == sessionId)
+            .OrderByDescending((r) => r.GeneratedAt)
+            .FirstOrDefaultAsync();
+
+        if (report is null)
+        {
+            return NotFound();
+        }
+
+        return Ok(MapToDto(report));
+    }
+
+    private static DebriefReportDto MapToDto(DebriefReport report)
+    {
+        return new DebriefReportDto
+        {
+            DebriefReportId = report.DebriefReportId,
+            SimulationSessionId = report.SimulationSessionId,
+            GeneratedAt = report.GeneratedAt,
+            Summary = report.Summary,
+        };
     }
 }
